@@ -8,100 +8,42 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { 
-            --bg: #0b0e14; 
-            --card-bg: #161b26; 
-            --accent: #4c8bf5; 
-            --text: #ffffff; 
-            --gray: #8e8e93;
-            --purple-grad: linear-gradient(135deg, #1a0a2e 0%, #4a148c 100%);
+            --bg: #0b0e14; --card-bg: #161b26; --accent: #4c8bf5; --text: #ffffff; --gray: #8e8e93;
+            --purple-grad: linear-gradient(180deg, #1a0a2e 0%, #4a148c 100%);
         }
+        body { background-color: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
         
-        body { 
-            background-color: var(--bg); color: var(--text); 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-            margin: 0; padding: 0; overflow-x: hidden; 
-        }
-
-        /* شاشة التحميل بنفس الستيل */
-        #loader {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--purple-grad); display: flex; justify-content: center;
-            align-items: center; z-index: 9999; transition: opacity 0.5s;
-        }
+        /* Loader */
+        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--purple-grad); display: flex; justify-content: center; align-items: center; z-index: 9999; transition: 0.5s; }
         .spinner { width: 45px; height: 45px; border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid white; border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* الهيدر (صورة المستخدم والاسم) */
-        .top-header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 20px; background: rgba(0,0,0,0.2);
-        }
-        .user-profile { display: flex; align-items: center; gap: 10px; }
-        .user-avatar { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--accent); background: #222; object-fit: cover; }
-        .user-details h3 { margin: 0; font-size: 16px; color: var(--accent); }
-        .user-details p { margin: 0; font-size: 12px; color: var(--gray); }
-
-        /* كارت الترحيب والرصيد */
-        .welcome-card {
-            background: linear-gradient(180deg, #1a1f2e 0%, #0b0e14 100%);
-            margin: 15px; padding: 25px; border-radius: 25px;
-            border: 1px solid rgba(255,255,255,0.05); text-align: left;
-        }
-        .welcome-card h1 { margin: 0; font-size: 28px; }
-        .balance-box {
-            background: rgba(255,255,255,0.03); border-radius: 15px;
-            padding: 15px; margin-top: 20px; border: 1px solid rgba(255,255,255,0.05);
-            display: inline-block; min-width: 150px;
-        }
-        .balance-box span { font-size: 22px; font-weight: bold; color: #4c8bf5; }
-
-        /* شبكة الأقسام (طبق الأصل) */
-        .section-label { padding: 0 20px; margin-bottom: 15px; font-size: 20px; font-weight: bold; }
-        .sections-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 0 15px 20px; }
-        
-        .s-card {
-            background: var(--card-bg); border-radius: 20px; padding: 25px 15px;
-            text-align: center; border: 1px solid rgba(255,255,255,0.05);
-            position: relative; transition: 0.3s;
-        }
-        .s-card:active { transform: scale(0.95); background: #1e2533; }
-        .icon-box {
-            width: 55px; height: 55px; border-radius: 18px;
-            display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 15px; font-size: 24px; color: white;
-        }
-        .s-card span { display: block; font-size: 14px; font-weight: 600; color: #e0e0e0; }
-
-        /* ألوان الأيقونات كما في الصورة */
-        .bg-orange { background: #f39c12; }
-        .bg-purple { background: #9b59b6; }
-        .bg-teal { background: #16a085; }
-        .bg-gold { background: #d4af37; }
-        .bg-blue { background: #2980b9; }
-        .bg-red { background: #e74c3c; }
-
-        /* كارت البائع (Seller Products) */
-        .seller-card {
-            background: linear-gradient(90deg, #161b26 0%, #1c2331 100%);
-            margin: 15px; padding: 20px; border-radius: 20px;
-            display: flex; align-items: center; gap: 15px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        /* الإجراءات السريعة (Gradients) */
-        .quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 15px 30px; }
-        .q-btn { 
-            padding: 20px; border-radius: 18px; text-align: center; font-weight: bold;
-            display: flex; flex-direction: column; align-items: center; gap: 10px;
-        }
-        .grad-green { background: linear-gradient(135deg, #2ecc71, #27ae60); }
-        .grad-blue { background: linear-gradient(135deg, #3498db, #2980b9); }
-        .grad-purple { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
-        .grad-orange { background: linear-gradient(135deg, #e67e22, #d35400); }
-
-        .page { display: none; }
+        /* Pages Control */
+        .page { display: none; padding-bottom: 30px; }
         .active { display: block; animation: fadeIn 0.4s; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Shared Components */
+        .top-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: rgba(0,0,0,0.2); }
+        .user-avatar { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--accent); object-fit: cover; }
+        .welcome-card { background: linear-gradient(180deg, #1a1f2e 0%, #0b0e14 100%); margin: 15px; padding: 25px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.05); }
+        .balance-box { background: rgba(255,255,255,0.03); border-radius: 15px; padding: 12px; margin-top: 15px; border: 1px solid rgba(255,255,255,0.05); display: inline-block; }
+        
+        /* Grid Layout */
+        .sections-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 0 15px; }
+        .s-card { background: var(--card-bg); border-radius: 20px; padding: 20px 10px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
+        .icon-box { width: 50px; height: 50px; border-radius: 15px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: 22px; color: white; }
+        
+        /* Settings Styles */
+        .setting-item { background: var(--card-bg); border-radius: 15px; padding: 12px 15px; display: flex; align-items: center; gap: 12px; margin: 0 15px 10px; border: 1px solid rgba(255,255,255,0.03); }
+        .setting-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; }
+        .logout-btn { background: #a94442; color: white; margin: 20px 15px; padding: 15px; border-radius: 15px; text-align: center; font-weight: bold; }
+
+        /* Colors */
+        .bg-orange { background: #f39c12; } .bg-purple { background: #9b59b6; } .bg-teal { background: #16a085; }
+        .bg-gold { background: #d4af37; } .bg-blue { background: #2980b9; } .bg-red { background: #e74c3c; }
+        .grad-green { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+        .grad-blue { background: linear-gradient(135deg, #3498db, #2980b9); }
     </style>
 </head>
 <body>
@@ -110,102 +52,78 @@
 
     <div id="home-page" class="page active">
         <div class="top-header">
-            <div class="user-profile">
-                <img src="" id="user-photo" class="user-avatar" alt="👤">
-                <div class="user-details">
-                    <h3 id="user-name">Loading...</h3>
-                    <p>Star Market</p>
-                </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <img src="" class="user-photo user-avatar">
+                <div><h3 class="user-full-name" style="margin:0; font-size:15px; color:var(--accent);">User</h3><p style="margin:0; font-size:11px; color:var(--gray);">Star Market</p></div>
             </div>
-            <i class="fa-solid fa-gear" style="color: var(--gray);"></i>
+            <i class="fa-solid fa-gear" onclick="showPage('settings-page')" style="color: var(--gray); font-size: 20px;"></i>
         </div>
 
         <div class="welcome-card">
-            <h1>Welcome <span id="welcome-name" style="color:white">User</span>! 👋</h1>
-            <p style="color: var(--gray); font-size: 13px;">A premium hub for digital shopping & services.</p>
-            <div class="balance-box">
-                <p style="margin:0; font-size: 12px; color: var(--gray);">Balance</p>
-                <span>0 ⭐ / $0.00</span>
-            </div>
+            <h1 style="margin:0">Welcome <span class="first-name">User</span>! 👋</h1>
+            <p style="color:var(--gray); font-size:12px;">A premium hub for digital shopping & services.</p>
+            <div class="balance-box"><p style="margin:0; font-size:11px; color:var(--gray);">Balance</p><span>0 ⭐ / $0.00</span></div>
         </div>
 
-        <div class="section-label">Sections</div>
-        
+        <p style="padding:0 20px; font-weight:bold;">Sections</p>
         <div class="sections-grid">
-            <div class="s-card">
-                <div class="icon-box bg-orange"><i class="fa-solid fa-shop"></i></div>
-                <span>General Services</span>
-            </div>
-            <div class="s-card">
-                <div class="icon-box bg-purple"><i class="fa-solid fa-chart-line"></i></div>
-                <span>SMM Section</span>
-            </div>
-            <div class="s-card">
-                <div class="icon-box bg-teal"><i class="fa-solid fa-wallet"></i></div>
-                <span>Recharge & Payment</span>
-            </div>
-            <div class="s-card">
-                <div class="icon-box bg-gold"><i class="fa-solid fa-dollar-sign"></i></div>
-                <span>Money Transfers</span>
-            </div>
-            <div class="s-card" onclick="showPage('games-page')">
-                <div class="icon-box bg-blue"><i class="fa-solid fa-gamepad"></i></div>
-                <span>Games Section</span>
-            </div>
-            <div class="s-card">
-                <div class="icon-box bg-red"><i class="fa-solid fa-credit-card"></i></div>
-                <span>Cards Section</span>
-            </div>
+            <div class="s-card"><div class="icon-box bg-orange"><i class="fa-solid fa-shop"></i></div><span>General Services</span></div>
+            <div class="s-card"><div class="icon-box bg-purple"><i class="fa-solid fa-chart-line"></i></div><span>SMM Section</span></div>
+            <div class="s-card"><div class="icon-box bg-teal"><i class="fa-solid fa-wallet"></i></div><span>Recharge & Payment</span></div>
+            <div class="s-card"><div class="icon-box bg-gold"><i class="fa-solid fa-dollar-sign"></i></div><span>Money Transfers</span></div>
+        </div>
+    </div>
+
+    <div id="settings-page" class="page">
+        <div class="top-header">
+            <i class="fa-solid fa-arrow-right" onclick="showPage('home-page')"></i>
+            <h3 style="flex:1; text-align:center; margin-right:30px;">Settings</h3>
         </div>
 
-        <div class="seller-card">
-            <div class="icon-box bg-teal" style="margin:0"><i class="fa-solid fa-bag-shopping"></i></div>
-            <div style="flex:1">
-                <h4 style="margin:0">Seller Products</h4>
-                <p style="margin:0; font-size: 11px; color: var(--gray);">Browse & buy products from sellers</p>
-            </div>
-            <i class="fa-solid fa-chevron-right" style="color: var(--accent);"></i>
+        <div class="welcome-card" style="display:flex; align-items:center; gap:15px; padding:15px;">
+            <img src="" class="user-photo user-avatar" style="width:50px; height:50px;">
+            <div><h4 class="user-full-name" style="margin:0">User Name</h4><p style="margin:0; font-size:12px; color:var(--gray);">Customer Profile</p></div>
         </div>
 
-        <div class="section-label" style="margin-top: 20px;">Quick Actions</div>
+        <div class="setting-item">
+            <div class="setting-icon bg-purple"><i class="fa-solid fa-moon"></i></div>
+            <div style="flex:1"><h4>Appearance</h4><p>Toggle Dark/Light Mode</p></div>
+            <i class="fa-solid fa-chevron-left" style="font-size:12px; color:var(--gray);"></i>
+        </div>
         
-        <div class="quick-actions">
-            <div class="q-btn grad-green"><i class="fa-solid fa-wallet"></i> Recharge</div>
-            <div class="q-btn grad-blue"><i class="fa-solid fa-box"></i> My Orders</div>
-            <div class="q-btn grad-purple"><i class="fa-solid fa-users"></i> Referrals</div>
-            <div class="q-btn grad-orange"><i class="fa-solid fa-user"></i> Profile</div>
+        <div class="setting-item">
+            <div class="setting-icon bg-teal"><i class="fa-solid fa-wallet"></i></div>
+            <div style="flex:1"><h4>Top Up</h4><p>Add balance</p></div>
+            <i class="fa-solid fa-chevron-left" style="font-size:12px; color:var(--gray);"></i>
         </div>
+
+        <div class="logout-btn" onclick="tg.close()">Logout</div>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
-        tg.expand();
-        tg.ready();
+        tg.expand(); tg.ready();
 
-        // إخفاء التحميل
         window.onload = () => {
             setTimeout(() => { document.getElementById('loader').style.opacity = '0'; 
             setTimeout(() => document.getElementById('loader').style.display = 'none', 500); }, 1000);
         };
 
-        // جلب بيانات المستخدم الحقيقية (الاسم + الصورة)
         const user = tg.initDataUnsafe.user;
         if (user) {
-            document.getElementById('user-name').innerText = user.first_name + " " + (user.last_name || "");
-            document.getElementById('welcome-name').innerText = user.first_name;
-            
-            // جلب الصورة إذا كانت موجودة
-            if (user.photo_url) {
-                document.getElementById('user-photo').src = user.photo_url;
-            } else {
-                document.getElementById('user-photo').src = "https://ui-avatars.com/api/?name=" + user.first_name + "&background=4c8bf5&color=fff";
-            }
+            document.querySelectorAll('.user-full-name').forEach(el => el.innerText = user.first_name + " " + (user.last_name || ""));
+            document.querySelectorAll('.first-name').forEach(el => el.innerText = user.first_name);
+            const photo = user.photo_url || "https://ui-avatars.com/api/?name=" + user.first_name;
+            document.querySelectorAll('.user-photo').forEach(el => el.src = photo);
         }
 
         function showPage(id) {
-            // منطق التنقل
-            tg.showAlert("تم فتح القسم بنجاح");
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            tg.BackButton[id === 'home-page' ? 'hide' : 'show']();
         }
+
+        tg.BackButton.onClick(() => showPage('home-page'));
     </script>
 </body>
 </html>
