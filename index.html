@@ -15,140 +15,151 @@
         }
         
         body { 
-            background-color: var(--bg); 
-            color: var(--text); 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 0; 
-            padding: 0; 
-            overflow-x: hidden; 
+            background-color: var(--bg); color: var(--text); 
+            font-family: system-ui, -apple-system, sans-serif; 
+            margin: 0; padding: 0; overflow-x: hidden; 
         }
 
-        /* تحسين الصفحات */
+        /* 1. شاشة التحميل (Loader) */
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg); display: flex; justify-content: center;
+            align-items: center; z-index: 9999; transition: 0.5s;
+        }
+        .loader-content { text-align: center; }
+        .spinner {
+            width: 40px; height: 40px; border: 4px solid rgba(76, 139, 245, 0.1);
+            border-top: 4px solid var(--accent); border-radius: 50%;
+            animation: spin 1s linear infinite; margin: 0 auto 15px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* 2. تنسيق الصفحات */
         .page { display: none; padding: 15px; animation: fadeIn 0.4s ease; }
         .active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* ستايل السلايدر (الإعلانات) */
-        .slider-container {
-            width: 100%;
-            height: 150px;
-            overflow: hidden;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            position: relative;
+        .header { 
+            background: linear-gradient(145deg, #1a1f29, #12151c); 
+            padding: 25px 20px; border-radius: 0 0 30px 30px; 
+            text-align: center; border-bottom: 1px solid #2a303c; margin-bottom: 20px; 
         }
-        .slider { display: flex; transition: 0.5s; height: 100%; }
-        .slide { min-width: 100%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .balance-card { 
+            background: rgba(76, 139, 245, 0.1); padding: 8px 20px; 
+            border-radius: 15px; border: 1px solid var(--accent); margin-top: 12px; display: inline-block;
+        }
+
+        /* 3. السلايدر */
+        .slider-container {
+            width: 100%; height: 160px; border-radius: 20px; 
+            overflow: hidden; margin-bottom: 20px; border: 1px solid #2a303c;
+        }
         .slide img { width: 100%; height: 100%; object-fit: cover; }
 
-        .header { background: linear-gradient(145deg, #1a1f29, #12151c); padding: 20px; border-radius: 0 0 25px 25px; text-align: center; border-bottom: 1px solid #2a303c; margin-bottom: 20px; }
-        .balance-card { background: rgba(76, 139, 245, 0.1); padding: 8px 15px; border-radius: 12px; display: inline-block; border: 1px solid var(--accent); margin-top: 10px; }
-        
-        /* كروت الأقسام */
+        /* 4. الكروت والأقسام */
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .card { 
-            background: var(--card); 
-            border-radius: 18px; 
-            overflow: hidden; 
-            border: 1px solid #2a303c; 
-            transition: 0.3s;
-            position: relative;
+            background: var(--card); border-radius: 20px; overflow: hidden; 
+            border: 1px solid #2a303c; transition: 0.3s;
         }
         .card img { width: 100%; height: 100px; object-fit: cover; }
-        .card-info { padding: 12px; text-align: center; }
-        .card:active { transform: scale(0.96); }
+        .card-info { padding: 12px; text-align: center; font-weight: bold; font-size: 14px; }
+        .card:active { transform: scale(0.95); }
 
-        /* كروت المنتجات (فخمة) */
+        /* 5. كروت المنتجات */
         .product-card {
-            background: #161b22;
-            border-radius: 15px;
-            padding: 10px;
-            border: 1px solid #2a303c;
-            text-align: center;
+            background: #161b22; border-radius: 18px; padding: 15px;
+            border: 1px solid #2a303c; text-align: center;
         }
-        .product-card img { width: 80px; height: 80px; border-radius: 12px; margin-bottom: 10px; }
-        .price { color: var(--success); font-weight: bold; display: block; margin: 5px 0; }
-        .buy-btn { background: var(--accent); border: none; color: white; padding: 7px 15px; border-radius: 8px; width: 100%; cursor: pointer; }
-
-        .section-title { margin: 20px 5px 10px; font-size: 18px; display: flex; align-items: center; justify-content: space-between; }
-        
-        .btn-action { padding: 15px; border-radius: 15px; text-align: center; font-weight: bold; cursor: pointer; color: white; }
-        .recharge { background: #4caf50; }
-        .orders { background: #2196f3; }
+        .product-card img { width: 70px; height: 70px; border-radius: 12px; margin-bottom: 10px; }
+        .price { color: var(--success); font-weight: bold; display: block; margin-bottom: 10px; }
+        .buy-btn { 
+            background: var(--accent); border: none; color: white; 
+            padding: 10px; border-radius: 12px; width: 100%; font-weight: bold; 
+        }
     </style>
 </head>
 <body>
 
+    <div id="loader">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <p>جاري تحميل Star Market...</p>
+        </div>
+    </div>
+
     <div id="home-page" class="page active">
         <div class="header">
-            <h3>مرحباً بك <span id="username" style="color: var(--accent);">لؤي</span>! 👋</h3>
-            <div class="balance-card">رصيدك: <span id="balance">0 ⭐ / $0.00</span></div>
+            <h3 style="margin:0">مرحباً <span id="username" style="color: var(--accent);">User</span>! 👋</h3>
+            <div class="balance-card">رصيدك: <span style="font-weight: bold;">0.00 دج</span></div>
         </div>
 
         <div class="slider-container">
-            <div class="slider" id="slider">
-                <div class="slide"><img src="https://img.freepik.com/free-vector/gaming-banner-template-with-action-elements_23-2148737672.jpg" alt="Ads 1"></div>
-                </div>
+            <div class="slide">
+                <img src="https://img.freepik.com/free-vector/flat-sale-banner-with-photo-template_23-2149026954.jpg">
+            </div>
         </div>
 
-        <h4 class="section-title">الأقسام الرئيسية 📦</h4>
+        <h4 style="margin: 0 5px 15px;">الأقسام الرئيسية 📦</h4>
         <div class="grid">
             <div class="card" onclick="showPage('games-page')">
-                <img src="https://img.freepik.com/free-vector/modern-gaming-background-with-stylish-design_1017-30275.jpg">
-                <div class="card-info"><span>شحن الألعاب</span></div>
+                <img src="https://img.freepik.com/free-vector/joystick-game-controller-concept_23-2148533276.jpg">
+                <div class="card-info">شحن الألعاب</div>
             </div>
             <div class="card" onclick="showPage('smm-page')">
-                <img src="https://img.freepik.com/free-photo/social-media-marketing-concept-marketing-with-applications_23-2150063134.jpg">
-                <div class="card-info"><span>خدمات SMM</span></div>
+                <img src="https://img.freepik.com/free-vector/social-media-concept-with-icons_23-2148419614.jpg">
+                <div class="card-info">خدمات SMM</div>
             </div>
-        </div>
-
-        <h4 class="section-title">إجراءات سريعة ⚡</h4>
-        <div class="grid" style="margin-bottom: 20px;">
-            <div class="btn-action recharge" onclick="tg.showAlert('قريباً سيتم تفعيل الدفع عبر بريدي موب!')">شحن الرصيد 💳</div>
-            <div class="btn-action orders" onclick="tg.showAlert('لا توجد طلبات حالياً')">طلباتي 📦</div>
         </div>
     </div>
 
     <div id="games-page" class="page">
-        <h2 style="text-align: center;">🎮 متجر الألعاب</h2>
+        <h2 style="text-align: center; margin-bottom: 20px;">🎮 متجر الألعاب</h2>
         <div class="grid">
             <div class="product-card">
-                <img src="https://static.vecteezy.com/system/resources/previews/022/636/388/original/pubg-mobile-logo-free-vector.jpg">
-                <h4>PUBG Mobile</h4>
-                <span class="price">60 UC - 180 DA</span>
+                <img src="https://logowik.com/content/uploads/images/pubg-mobile5642.jpg">
+                <h4>PUBG UC</h4>
+                <span class="price">180 دج</span>
                 <button class="buy-btn" onclick="order('PUBG 60 UC')">شراء</button>
             </div>
             <div class="product-card">
                 <img src="https://logos-world.net/wp-content/uploads/2022/02/Free-Fire-Logo.png">
                 <h4>Free Fire</h4>
-                <span class="price">100 💎 - 150 DA</span>
-                <button class="buy-btn" onclick="order('Free Fire 100 Gems')">شراء</button>
+                <span class="price">150 دج</span>
+                <button class="buy-btn" onclick="order('FF 100 Gems')">شراء</button>
             </div>
         </div>
     </div>
 
     <div id="smm-page" class="page">
         <h2 style="text-align: center;">📈 خدمات SMM</h2>
-        <p style="text-align: center; color: #888;">سيتم إضافة الخدمات قريباً...</p>
+        <p style="text-align: center; color: #888; margin-top: 50px;">قريباً... خدمات تيك توك وإنستغرام</p>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
-        tg.expand();
-        
-        // جلب اسم المستخدم وتعيينه
+        tg.ready(); // إخبار تيليجرام أن التطبيق جاهز
+        tg.expand(); // توسيع التطبيق ليأخذ الشاشة كاملة
+
+        // إخفاء الـ Loader بعد ثانية
+        window.onload = () => {
+            setTimeout(() => {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
+            }, 1000);
+        };
+
+        // تعيين اسم المستخدم
         if (tg.initDataUnsafe.user) {
             document.getElementById('username').innerText = tg.initDataUnsafe.user.first_name;
         }
 
-        // وظيفة تغيير الصفحات
+        // التنقل بين الصفحات
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
             window.scrollTo(0, 0);
 
-            // تفعيل زر الرجوع الأصلي تاع تيليجرام
             if (pageId === 'home-page') {
                 tg.BackButton.hide();
             } else {
@@ -156,17 +167,17 @@
             }
         }
 
-        // عند الضغط على زر الرجوع في تيليجرام
+        // زر الرجوع تاع تيليجرام
         tg.BackButton.onClick(() => {
             showPage('home-page');
         });
 
-        // وظيفة الطلب
-        function order(itemName) {
-            tg.showConfirm(`هل تريد تأكيد طلب: ${itemName}؟`, (confirm) => {
-                if(confirm) {
-                    tg.sendData("Order: " + itemName);
-                    tg.close();
+        // تنفيذ الطلب
+        function order(name) {
+            tg.showConfirm(`هل أنت متأكد من شراء ${name}؟`, (ok) => {
+                if(ok) {
+                    tg.showAlert("شكراً لطلبك! سيتم التواصل معك.");
+                    // هنا تقدر تبعت البيانات للسيرفر تاعك
                 }
             });
         }
