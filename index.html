@@ -18,32 +18,40 @@
         .spinner { width: 45px; height: 45px; border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid white; border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* Pages Control */
-        .page { display: none; padding-bottom: 30px; }
-        .active { display: block; animation: fadeIn 0.4s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* Navigation */
+        .page { display: none; padding-bottom: 50px; }
+        .active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10deg); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Shared Components */
-        .top-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: rgba(0,0,0,0.2); }
-        .user-avatar { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--accent); object-fit: cover; }
-        .welcome-card { background: linear-gradient(180deg, #1a1f2e 0%, #0b0e14 100%); margin: 15px; padding: 25px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.05); }
-        .balance-box { background: rgba(255,255,255,0.03); border-radius: 15px; padding: 12px; margin-top: 15px; border: 1px solid rgba(255,255,255,0.05); display: inline-block; }
-        
-        /* Grid Layout */
-        .sections-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 0 15px; }
-        .s-card { background: var(--card-bg); border-radius: 20px; padding: 20px 10px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
-        .icon-box { width: 50px; height: 50px; border-radius: 15px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: 22px; color: white; }
-        
-        /* Settings Styles */
-        .setting-item { background: var(--card-bg); border-radius: 15px; padding: 12px 15px; display: flex; align-items: center; gap: 12px; margin: 0 15px 10px; border: 1px solid rgba(255,255,255,0.03); }
-        .setting-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; }
-        .logout-btn { background: #a94442; color: white; margin: 20px 15px; padding: 15px; border-radius: 15px; text-align: center; font-weight: bold; }
+        /* Headers */
+        .top-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .user-avatar { width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--accent); object-fit: cover; }
 
-        /* Colors */
+        /* Cards & Grids */
+        .welcome-card { background: linear-gradient(145deg, #1a1f2e, #0b0e14); margin: 15px; padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); }
+        .balance-display { background: rgba(76,139,245,0.05); border: 1px solid rgba(76,139,245,0.2); border-radius: 15px; padding: 15px; margin-top: 15px; display: flex; justify-content: space-between; align-items: center; }
+        
+        .sections-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 15px; }
+        .s-card { background: var(--card-bg); border-radius: 20px; padding: 25px 10px; text-align: center; border: 1px solid rgba(255,255,255,0.03); transition: 0.2s; }
+        .s-card:active { transform: scale(0.96); background: #1e2533; }
+        .icon-box { width: 55px; height: 55px; border-radius: 18px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 24px; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+
+        /* Colors & Icons */
         .bg-orange { background: #f39c12; } .bg-purple { background: #9b59b6; } .bg-teal { background: #16a085; }
         .bg-gold { background: #d4af37; } .bg-blue { background: #2980b9; } .bg-red { background: #e74c3c; }
+        .bg-green { background: #27ae60; }
+
+        /* List Items (Settings & Products) */
+        .list-item { background: var(--card-bg); margin: 10px 15px; padding: 15px; border-radius: 18px; display: flex; align-items: center; gap: 15px; border: 1px solid rgba(255,255,255,0.03); }
+        .list-icon { width: 45px; height: 45px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: white; }
+
+        /* Quick Actions Buttons */
+        .action-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 15px; }
+        .a-btn { padding: 18px; border-radius: 18px; text-align: center; font-weight: bold; border: none; color: white; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px; }
         .grad-green { background: linear-gradient(135deg, #2ecc71, #27ae60); }
         .grad-blue { background: linear-gradient(135deg, #3498db, #2980b9); }
+        .grad-purple { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+        .grad-orange { background: linear-gradient(135deg, #e67e22, #d35400); }
     </style>
 </head>
 <body>
@@ -53,24 +61,41 @@
     <div id="home-page" class="page active">
         <div class="top-header">
             <div style="display: flex; align-items: center; gap: 10px;">
-                <img src="" class="user-photo user-avatar">
-                <div><h3 class="user-full-name" style="margin:0; font-size:15px; color:var(--accent);">User</h3><p style="margin:0; font-size:11px; color:var(--gray);">Star Market</p></div>
+                <img src="" class="u-photo user-avatar">
+                <div><h4 class="u-name" style="margin:0; color:var(--accent);">User</h4><p style="margin:0; font-size:11px; color:var(--gray);">Premium Account</p></div>
             </div>
-            <i class="fa-solid fa-gear" onclick="showPage('settings-page')" style="color: var(--gray); font-size: 20px;"></i>
+            <i class="fa-solid fa-gear" onclick="showPage('settings-page')" style="font-size:22px; color:var(--gray);"></i>
         </div>
 
         <div class="welcome-card">
-            <h1 style="margin:0">Welcome <span class="first-name">User</span>! 👋</h1>
-            <p style="color:var(--gray); font-size:12px;">A premium hub for digital shopping & services.</p>
-            <div class="balance-box"><p style="margin:0; font-size:11px; color:var(--gray);">Balance</p><span>0 ⭐ / $0.00</span></div>
+            <h2 style="margin:0">Welcome <span class="u-first">User</span>! 👋</h2>
+            <p style="color:var(--gray); font-size:12px; margin-top:5px;">Digital Services Hub & Marketplace</p>
+            <div class="balance-display" onclick="showPage('recharge-page')">
+                <div><p style="margin:0; font-size:11px; color:var(--gray);">Current Balance</p><span style="font-size:20px; font-weight:bold; color:var(--accent);">0 ⭐ / $0.00</span></div>
+                <i class="fa-solid fa-plus-circle" style="font-size:24px; color:var(--accent);"></i>
+            </div>
         </div>
 
-        <p style="padding:0 20px; font-weight:bold;">Sections</p>
+        <h3 style="padding:0 20px; margin:20px 0 10px; font-size:18px;">Sections</h3>
         <div class="sections-grid">
-            <div class="s-card"><div class="icon-box bg-orange"><i class="fa-solid fa-shop"></i></div><span>General Services</span></div>
-            <div class="s-card"><div class="icon-box bg-purple"><i class="fa-solid fa-chart-line"></i></div><span>SMM Section</span></div>
-            <div class="s-card"><div class="icon-box bg-teal"><i class="fa-solid fa-wallet"></i></div><span>Recharge & Payment</span></div>
-            <div class="s-card"><div class="icon-box bg-gold"><i class="fa-solid fa-dollar-sign"></i></div><span>Money Transfers</span></div>
+            <div class="s-card" onclick="showPage('games-page')"><div class="icon-box bg-blue"><i class="fa-solid fa-gamepad"></i></div><span>Games</span></div>
+            <div class="s-card" onclick="showPage('smm-page')"><div class="icon-box bg-purple"><i class="fa-solid fa-chart-line"></i></div><span>SMM Services</span></div>
+            <div class="s-card" onclick="showPage('numbers-page')"><div class="icon-box bg-teal"><i class="fa-solid fa-phone"></i></div><span>Numbers</span></div>
+            <div class="s-card" onclick="showPage('esim-page')"><div class="icon-box bg-orange"><i class="fa-solid fa-signal"></i></div><span>eSIM Data</span></div>
+        </div>
+
+        <div class="list-item" style="margin-top:20px;" onclick="showPage('seller-page')">
+            <div class="list-icon bg-green"><i class="fa-solid fa-shop"></i></div>
+            <div style="flex:1"><h4>Seller Products</h4><p>Browse products from top sellers</p></div>
+            <i class="fa-solid fa-chevron-left" style="color:var(--accent)"></i>
+        </div>
+
+        <h3 style="padding:0 20px; margin:20px 0 10px; font-size:18px;">Quick Actions</h3>
+        <div class="action-btns">
+            <div class="a-btn grad-green" onclick="showPage('recharge-page')"><i class="fa-solid fa-wallet"></i> Recharge</div>
+            <div class="a-btn grad-blue"><i class="fa-solid fa-box"></i> My Orders</div>
+            <div class="a-btn grad-purple"><i class="fa-solid fa-users"></i> Referrals</div>
+            <div class="a-btn grad-orange" onclick="showPage('mediator-page')"><i class="fa-solid fa-shield-halved"></i> Mediator</div>
         </div>
     </div>
 
@@ -79,25 +104,61 @@
             <i class="fa-solid fa-arrow-right" onclick="showPage('home-page')"></i>
             <h3 style="flex:1; text-align:center; margin-right:30px;">Settings</h3>
         </div>
-
         <div class="welcome-card" style="display:flex; align-items:center; gap:15px; padding:15px;">
-            <img src="" class="user-photo user-avatar" style="width:50px; height:50px;">
-            <div><h4 class="user-full-name" style="margin:0">User Name</h4><p style="margin:0; font-size:12px; color:var(--gray);">Customer Profile</p></div>
+            <img src="" class="u-photo user-avatar" style="width:50px; height:50px;">
+            <div><h4 class="u-name" style="margin:0">User</h4><p style="margin:0; font-size:12px; color:var(--gray);">Customer Profile</p></div>
         </div>
-
-        <div class="setting-item">
-            <div class="setting-icon bg-purple"><i class="fa-solid fa-moon"></i></div>
+        <div class="list-item">
+            <div class="list-icon bg-purple"><i class="fa-solid fa-moon"></i></div>
             <div style="flex:1"><h4>Appearance</h4><p>Toggle Dark/Light Mode</p></div>
-            <i class="fa-solid fa-chevron-left" style="font-size:12px; color:var(--gray);"></i>
+            <span style="font-size:10px; color:var(--accent); background:rgba(76,139,245,0.1); padding:4px 8px; border-radius:10px;">Dark</span>
         </div>
-        
-        <div class="setting-item">
-            <div class="setting-icon bg-teal"><i class="fa-solid fa-wallet"></i></div>
-            <div style="flex:1"><h4>Top Up</h4><p>Add balance</p></div>
-            <i class="fa-solid fa-chevron-left" style="font-size:12px; color:var(--gray);"></i>
+        <div class="list-item" onclick="showPage('recharge-page')">
+            <div class="list-icon bg-teal"><i class="fa-solid fa-plus"></i></div>
+            <div style="flex:1"><h4>Top Up</h4><p>Add balance to your account</p></div>
+            <i class="fa-solid fa-chevron-left" style="color:var(--gray)"></i>
         </div>
+        <div class="list-item">
+            <div class="list-icon bg-orange"><i class="fa-solid fa-paper-plane"></i></div>
+            <div style="flex:1"><h4>Transfer Balance</h4><p>Send to another user</p></div>
+            <i class="fa-solid fa-chevron-left" style="color:var(--gray)"></i>
+        </div>
+        <div class="list-item">
+            <div class="list-icon bg-blue"><i class="fa-solid fa-history"></i></div>
+            <div style="flex:1"><h4>Transfer History</h4><p>View outgoing transfers</p></div>
+            <i class="fa-solid fa-chevron-left" style="color:var(--gray)"></i>
+        </div>
+        <div style="background:#a94442; color:white; margin:20px 15px; padding:15px; border-radius:18px; text-align:center; font-weight:bold;" onclick="tg.close()">Logout</div>
+    </div>
 
-        <div class="logout-btn" onclick="tg.close()">Logout</div>
+    <div id="recharge-page" class="page">
+        <div class="top-header">
+            <i class="fa-solid fa-arrow-right" onclick="showPage('home-page')"></i>
+            <h3 style="flex:1; text-align:center; margin-right:30px;">Recharge Balance</h3>
+        </div>
+        <div class="list-item">
+            <div class="list-icon bg-gold"><i class="fa-solid fa-star"></i></div>
+            <div style="flex:1"><h4>Telegram Stars</h4><p>Direct in-app purchase</p></div>
+            <i class="fa-solid fa-chevron-left"></i>
+        </div>
+        <div class="list-item">
+            <div class="list-icon bg-blue"><i class="fa-solid fa-gem"></i></div>
+            <div style="flex:1"><h4>TON Crypto</h4><p>Pay with Toncoin</p></div>
+            <i class="fa-solid fa-chevron-left"></i>
+        </div>
+        <div class="list-item">
+            <div class="list-icon bg-orange"><i class="fa-solid fa-bolt"></i></div>
+            <div style="flex:1"><h4>Binance Pay</h4><p>Fast crypto transfer</p></div>
+            <i class="fa-solid fa-chevron-left"></i>
+        </div>
+    </div>
+
+    <div id="games-page" class="page">
+        <div class="top-header"><i class="fa-solid fa-arrow-right" onclick="showPage('home-page')"></i><h3>Games Section</h3></div>
+        <div class="sections-grid" style="margin-top:20px;">
+            <div class="s-card"><img src="https://img.icons8.com/color/96/pubg.png" width="40"><br><span>PUBG Mobile</span></div>
+            <div class="s-card"><img src="https://img.icons8.com/color/96/free-fire.png" width="40"><br><span>Free Fire</span></div>
+        </div>
     </div>
 
     <script>
@@ -111,15 +172,16 @@
 
         const user = tg.initDataUnsafe.user;
         if (user) {
-            document.querySelectorAll('.user-full-name').forEach(el => el.innerText = user.first_name + " " + (user.last_name || ""));
-            document.querySelectorAll('.first-name').forEach(el => el.innerText = user.first_name);
+            document.querySelectorAll('.u-name').forEach(el => el.innerText = user.first_name + " " + (user.last_name || ""));
+            document.querySelectorAll('.u-first').forEach(el => el.innerText = user.first_name);
             const photo = user.photo_url || "https://ui-avatars.com/api/?name=" + user.first_name;
-            document.querySelectorAll('.user-photo').forEach(el => el.src = photo);
+            document.querySelectorAll('.u-photo').forEach(el => el.src = photo);
         }
 
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
+            window.scrollTo(0,0);
             tg.BackButton[id === 'home-page' ? 'hide' : 'show']();
         }
 
