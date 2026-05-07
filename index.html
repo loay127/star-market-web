@@ -5,181 +5,206 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Star Market Premium</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { 
-            --bg: #0f1218; 
-            --card: #1c212b; 
+            --bg: #0b0e14; 
+            --card-bg: #161b26; 
             --accent: #4c8bf5; 
             --text: #ffffff; 
-            --success: #31b545;
+            --gray: #8e8e93;
+            --purple-grad: linear-gradient(135deg, #1a0a2e 0%, #4a148c 100%);
         }
         
         body { 
             background-color: var(--bg); color: var(--text); 
-            font-family: system-ui, -apple-system, sans-serif; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
             margin: 0; padding: 0; overflow-x: hidden; 
         }
 
-        /* 1. شاشة التحميل (Loader) */
+        /* شاشة التحميل بنفس الستيل */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg); display: flex; justify-content: center;
-            align-items: center; z-index: 9999; transition: 0.5s;
+            background: var(--purple-grad); display: flex; justify-content: center;
+            align-items: center; z-index: 9999; transition: opacity 0.5s;
         }
-        .loader-content { text-align: center; }
-        .spinner {
-            width: 40px; height: 40px; border: 4px solid rgba(76, 139, 245, 0.1);
-            border-top: 4px solid var(--accent); border-radius: 50%;
-            animation: spin 1s linear infinite; margin: 0 auto 15px;
-        }
+        .spinner { width: 45px; height: 45px; border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid white; border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* 2. تنسيق الصفحات */
-        .page { display: none; padding: 15px; animation: fadeIn 0.4s ease; }
-        .active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* الهيدر (صورة المستخدم والاسم) */
+        .top-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 20px; background: rgba(0,0,0,0.2);
+        }
+        .user-profile { display: flex; align-items: center; gap: 10px; }
+        .user-avatar { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--accent); background: #222; object-fit: cover; }
+        .user-details h3 { margin: 0; font-size: 16px; color: var(--accent); }
+        .user-details p { margin: 0; font-size: 12px; color: var(--gray); }
 
-        .header { 
-            background: linear-gradient(145deg, #1a1f29, #12151c); 
-            padding: 25px 20px; border-radius: 0 0 30px 30px; 
-            text-align: center; border-bottom: 1px solid #2a303c; margin-bottom: 20px; 
+        /* كارت الترحيب والرصيد */
+        .welcome-card {
+            background: linear-gradient(180deg, #1a1f2e 0%, #0b0e14 100%);
+            margin: 15px; padding: 25px; border-radius: 25px;
+            border: 1px solid rgba(255,255,255,0.05); text-align: left;
         }
-        .balance-card { 
-            background: rgba(76, 139, 245, 0.1); padding: 8px 20px; 
-            border-radius: 15px; border: 1px solid var(--accent); margin-top: 12px; display: inline-block;
+        .welcome-card h1 { margin: 0; font-size: 28px; }
+        .balance-box {
+            background: rgba(255,255,255,0.03); border-radius: 15px;
+            padding: 15px; margin-top: 20px; border: 1px solid rgba(255,255,255,0.05);
+            display: inline-block; min-width: 150px;
+        }
+        .balance-box span { font-size: 22px; font-weight: bold; color: #4c8bf5; }
+
+        /* شبكة الأقسام (طبق الأصل) */
+        .section-label { padding: 0 20px; margin-bottom: 15px; font-size: 20px; font-weight: bold; }
+        .sections-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 0 15px 20px; }
+        
+        .s-card {
+            background: var(--card-bg); border-radius: 20px; padding: 25px 15px;
+            text-align: center; border: 1px solid rgba(255,255,255,0.05);
+            position: relative; transition: 0.3s;
+        }
+        .s-card:active { transform: scale(0.95); background: #1e2533; }
+        .icon-box {
+            width: 55px; height: 55px; border-radius: 18px;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 15px; font-size: 24px; color: white;
+        }
+        .s-card span { display: block; font-size: 14px; font-weight: 600; color: #e0e0e0; }
+
+        /* ألوان الأيقونات كما في الصورة */
+        .bg-orange { background: #f39c12; }
+        .bg-purple { background: #9b59b6; }
+        .bg-teal { background: #16a085; }
+        .bg-gold { background: #d4af37; }
+        .bg-blue { background: #2980b9; }
+        .bg-red { background: #e74c3c; }
+
+        /* كارت البائع (Seller Products) */
+        .seller-card {
+            background: linear-gradient(90deg, #161b26 0%, #1c2331 100%);
+            margin: 15px; padding: 20px; border-radius: 20px;
+            display: flex; align-items: center; gap: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
-        /* 3. السلايدر */
-        .slider-container {
-            width: 100%; height: 160px; border-radius: 20px; 
-            overflow: hidden; margin-bottom: 20px; border: 1px solid #2a303c;
+        /* الإجراءات السريعة (Gradients) */
+        .quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 15px 30px; }
+        .q-btn { 
+            padding: 20px; border-radius: 18px; text-align: center; font-weight: bold;
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
         }
-        .slide img { width: 100%; height: 100%; object-fit: cover; }
+        .grad-green { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+        .grad-blue { background: linear-gradient(135deg, #3498db, #2980b9); }
+        .grad-purple { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+        .grad-orange { background: linear-gradient(135deg, #e67e22, #d35400); }
 
-        /* 4. الكروت والأقسام */
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .card { 
-            background: var(--card); border-radius: 20px; overflow: hidden; 
-            border: 1px solid #2a303c; transition: 0.3s;
-        }
-        .card img { width: 100%; height: 100px; object-fit: cover; }
-        .card-info { padding: 12px; text-align: center; font-weight: bold; font-size: 14px; }
-        .card:active { transform: scale(0.95); }
-
-        /* 5. كروت المنتجات */
-        .product-card {
-            background: #161b22; border-radius: 18px; padding: 15px;
-            border: 1px solid #2a303c; text-align: center;
-        }
-        .product-card img { width: 70px; height: 70px; border-radius: 12px; margin-bottom: 10px; }
-        .price { color: var(--success); font-weight: bold; display: block; margin-bottom: 10px; }
-        .buy-btn { 
-            background: var(--accent); border: none; color: white; 
-            padding: 10px; border-radius: 12px; width: 100%; font-weight: bold; 
-        }
+        .page { display: none; }
+        .active { display: block; animation: fadeIn 0.4s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
-    <div id="loader">
-        <div class="loader-content">
-            <div class="spinner"></div>
-            <p>جاري تحميل Star Market...</p>
-        </div>
-    </div>
+    <div id="loader"><div class="spinner"></div></div>
 
     <div id="home-page" class="page active">
-        <div class="header">
-            <h3 style="margin:0">مرحباً <span id="username" style="color: var(--accent);">User</span>! 👋</h3>
-            <div class="balance-card">رصيدك: <span style="font-weight: bold;">0.00 دج</span></div>
+        <div class="top-header">
+            <div class="user-profile">
+                <img src="" id="user-photo" class="user-avatar" alt="👤">
+                <div class="user-details">
+                    <h3 id="user-name">Loading...</h3>
+                    <p>Star Market</p>
+                </div>
+            </div>
+            <i class="fa-solid fa-gear" style="color: var(--gray);"></i>
         </div>
 
-        <div class="slider-container">
-            <div class="slide">
-                <img src="https://img.freepik.com/free-vector/flat-sale-banner-with-photo-template_23-2149026954.jpg">
+        <div class="welcome-card">
+            <h1>Welcome <span id="welcome-name" style="color:white">User</span>! 👋</h1>
+            <p style="color: var(--gray); font-size: 13px;">A premium hub for digital shopping & services.</p>
+            <div class="balance-box">
+                <p style="margin:0; font-size: 12px; color: var(--gray);">Balance</p>
+                <span>0 ⭐ / $0.00</span>
             </div>
         </div>
 
-        <h4 style="margin: 0 5px 15px;">الأقسام الرئيسية 📦</h4>
-        <div class="grid">
-            <div class="card" onclick="showPage('games-page')">
-                <img src="https://img.freepik.com/free-vector/joystick-game-controller-concept_23-2148533276.jpg">
-                <div class="card-info">شحن الألعاب</div>
+        <div class="section-label">Sections</div>
+        
+        <div class="sections-grid">
+            <div class="s-card">
+                <div class="icon-box bg-orange"><i class="fa-solid fa-shop"></i></div>
+                <span>General Services</span>
             </div>
-            <div class="card" onclick="showPage('smm-page')">
-                <img src="https://img.freepik.com/free-vector/social-media-concept-with-icons_23-2148419614.jpg">
-                <div class="card-info">خدمات SMM</div>
+            <div class="s-card">
+                <div class="icon-box bg-purple"><i class="fa-solid fa-chart-line"></i></div>
+                <span>SMM Section</span>
+            </div>
+            <div class="s-card">
+                <div class="icon-box bg-teal"><i class="fa-solid fa-wallet"></i></div>
+                <span>Recharge & Payment</span>
+            </div>
+            <div class="s-card">
+                <div class="icon-box bg-gold"><i class="fa-solid fa-dollar-sign"></i></div>
+                <span>Money Transfers</span>
+            </div>
+            <div class="s-card" onclick="showPage('games-page')">
+                <div class="icon-box bg-blue"><i class="fa-solid fa-gamepad"></i></div>
+                <span>Games Section</span>
+            </div>
+            <div class="s-card">
+                <div class="icon-box bg-red"><i class="fa-solid fa-credit-card"></i></div>
+                <span>Cards Section</span>
             </div>
         </div>
-    </div>
 
-    <div id="games-page" class="page">
-        <h2 style="text-align: center; margin-bottom: 20px;">🎮 متجر الألعاب</h2>
-        <div class="grid">
-            <div class="product-card">
-                <img src="https://logowik.com/content/uploads/images/pubg-mobile5642.jpg">
-                <h4>PUBG UC</h4>
-                <span class="price">180 دج</span>
-                <button class="buy-btn" onclick="order('PUBG 60 UC')">شراء</button>
+        <div class="seller-card">
+            <div class="icon-box bg-teal" style="margin:0"><i class="fa-solid fa-bag-shopping"></i></div>
+            <div style="flex:1">
+                <h4 style="margin:0">Seller Products</h4>
+                <p style="margin:0; font-size: 11px; color: var(--gray);">Browse & buy products from sellers</p>
             </div>
-            <div class="product-card">
-                <img src="https://logos-world.net/wp-content/uploads/2022/02/Free-Fire-Logo.png">
-                <h4>Free Fire</h4>
-                <span class="price">150 دج</span>
-                <button class="buy-btn" onclick="order('FF 100 Gems')">شراء</button>
-            </div>
+            <i class="fa-solid fa-chevron-right" style="color: var(--accent);"></i>
         </div>
-    </div>
 
-    <div id="smm-page" class="page">
-        <h2 style="text-align: center;">📈 خدمات SMM</h2>
-        <p style="text-align: center; color: #888; margin-top: 50px;">قريباً... خدمات تيك توك وإنستغرام</p>
+        <div class="section-label" style="margin-top: 20px;">Quick Actions</div>
+        
+        <div class="quick-actions">
+            <div class="q-btn grad-green"><i class="fa-solid fa-wallet"></i> Recharge</div>
+            <div class="q-btn grad-blue"><i class="fa-solid fa-box"></i> My Orders</div>
+            <div class="q-btn grad-purple"><i class="fa-solid fa-users"></i> Referrals</div>
+            <div class="q-btn grad-orange"><i class="fa-solid fa-user"></i> Profile</div>
+        </div>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
-        tg.ready(); // إخبار تيليجرام أن التطبيق جاهز
-        tg.expand(); // توسيع التطبيق ليأخذ الشاشة كاملة
+        tg.expand();
+        tg.ready();
 
-        // إخفاء الـ Loader بعد ثانية
+        // إخفاء التحميل
         window.onload = () => {
-            setTimeout(() => {
-                document.getElementById('loader').style.opacity = '0';
-                setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
-            }, 1000);
+            setTimeout(() => { document.getElementById('loader').style.opacity = '0'; 
+            setTimeout(() => document.getElementById('loader').style.display = 'none', 500); }, 1000);
         };
 
-        // تعيين اسم المستخدم
-        if (tg.initDataUnsafe.user) {
-            document.getElementById('username').innerText = tg.initDataUnsafe.user.first_name;
-        }
-
-        // التنقل بين الصفحات
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            window.scrollTo(0, 0);
-
-            if (pageId === 'home-page') {
-                tg.BackButton.hide();
+        // جلب بيانات المستخدم الحقيقية (الاسم + الصورة)
+        const user = tg.initDataUnsafe.user;
+        if (user) {
+            document.getElementById('user-name').innerText = user.first_name + " " + (user.last_name || "");
+            document.getElementById('welcome-name').innerText = user.first_name;
+            
+            // جلب الصورة إذا كانت موجودة
+            if (user.photo_url) {
+                document.getElementById('user-photo').src = user.photo_url;
             } else {
-                tg.BackButton.show();
+                document.getElementById('user-photo').src = "https://ui-avatars.com/api/?name=" + user.first_name + "&background=4c8bf5&color=fff";
             }
         }
 
-        // زر الرجوع تاع تيليجرام
-        tg.BackButton.onClick(() => {
-            showPage('home-page');
-        });
-
-        // تنفيذ الطلب
-        function order(name) {
-            tg.showConfirm(`هل أنت متأكد من شراء ${name}؟`, (ok) => {
-                if(ok) {
-                    tg.showAlert("شكراً لطلبك! سيتم التواصل معك.");
-                    // هنا تقدر تبعت البيانات للسيرفر تاعك
-                }
-            });
+        function showPage(id) {
+            // منطق التنقل
+            tg.showAlert("تم فتح القسم بنجاح");
         }
     </script>
 </body>
