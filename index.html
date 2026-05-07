@@ -6,34 +6,80 @@
     <title>Star Market</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        :root { --bg-color: #0f1218; --card-bg: #1c212b; --accent: #4c8bf5; --text: #ffffff; }
-        body { background-color: var(--bg-color); color: var(--text); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 15px; overflow-x: hidden; }
-        .page { display: none; animation: fadeIn 0.3s ease; }
+        :root { --bg: #0f1218; --card: #1c212b; --accent: #4c8bf5; --text: #ffffff; }
+        body { background-color: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 15px; }
+        
+        /* نظام الصفحات */
+        .page { display: none; }
         .active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Header */
-        .header { background: linear-gradient(145deg, #1a1f29, #12151c); padding: 20px; border-radius: 20px; text-align: center; margin-bottom: 20px; border: 1px solid #2a303c; }
+        /* التصميم */
+        .header { background: linear-gradient(145deg, #1a1f29, #12151c); padding: 20px; border-radius: 20px; text-align: center; border: 1px solid #2a303c; margin-bottom: 20px; }
         .balance-card { background: #161b22; padding: 10px 20px; border-radius: 15px; display: inline-block; margin-top: 10px; border: 1px solid #333; }
-        .balance-value { color: var(--accent); font-size: 20px; font-weight: bold; }
+        .balance-value { color: var(--accent); font-weight: bold; }
 
-        /* Grid System */
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
-        .card { background: var(--card-bg); padding: 20px; border-radius: 18px; text-align: center; border: 1px solid #2a303c; transition: 0.2s; cursor: pointer; position: relative; }
-        .card:active { transform: scale(0.95); background: #252b38; }
-        .card i { font-size: 32px; margin-bottom: 10px; display: block; }
-        .card span { font-size: 14px; font-weight: 500; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .card { background: var(--card); padding: 20px; border-radius: 18px; text-align: center; border: 1px solid #2a303c; cursor: pointer; }
+        .card i { font-size: 30px; display: block; margin-bottom: 8px; }
 
-        /* Quick Actions (Bottom) */
-        .quick-actions { grid-template-columns: 1fr 1fr; margin-top: 25px; }
-        .btn-action { padding: 15px; border-radius: 15px; font-weight: bold; text-align: center; border: none; color: white; }
+        .btn-action { padding: 15px; border-radius: 15px; text-align: center; font-weight: bold; margin-top: 10px; cursor: pointer; }
         .recharge { background: #4caf50; }
         .orders { background: #2196f3; }
-        
-        /* Back Button */
-        .back-btn { background: #333; color: white; padding: 8px 15px; border-radius: 10px; border: none; margin-bottom: 15px; cursor: pointer; }
+        .back-btn { background: #333; color: white; padding: 8px 15px; border-radius: 10px; border: none; margin-bottom: 15px; }
     </style>
 </head>
+<body>
+
+    <div id="home-page" class="page active">
+        <div class="header">
+            <h3>Welcome <span id="username">Guest</span>! 👋</h3>
+            <div class="balance-card">Balance: <span class="balance-value">0 ⭐ / $0.00</span></div>
+        </div>
+
+        <h4>Sections</h4>
+        <div class="grid">
+            <div class="card" onclick="showPage('games-page')"><i>🎮</i>Games Section</div>
+            <div class="card" onclick="showPage('smm-page')"><i>📈</i>SMM Section</div>
+            <div class="card" onclick="showPage('numbers-page')"><i>📞</i>Numbers</div>
+            <div class="card" onclick="showPage('esim-page')"><i>📱</i>eSIM</div>
+        </div>
+
+        <h4>Quick Actions</h4>
+        <div class="grid">
+            <div class="btn-action recharge" onclick="alert('قريباً...')">Recharge 💳</div>
+            <div class="btn-action orders" onclick="alert('قريباً...')">My Orders 📦</div>
+        </div>
+    </div>
+
+    <div id="games-page" class="page">
+        <button class="back-btn" onclick="showPage('home-page')">⬅️ Back</button>
+        <h2>🎮 Games Store</h2>
+        <div class="grid">
+            <div class="card">🔥<br>PUBG</div>
+            <div class="card">💎<br>Free Fire</div>
+        </div>
+    </div>
+
+    <div id="smm-page" class="page">
+        <button class="back-btn" onclick="showPage('home-page')">⬅️ Back</button>
+        <h2>📈 SMM Services</h2>
+        <p>خدمات زيادة المتابعين قريباً...</p>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        if (tg.initDataUnsafe.user) {
+            document.getElementById('username').innerText = tg.initDataUnsafe.user.first_name;
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+        }
+    </script>
+</body>
+</html>
 <body>
 
     <div id="home-page" class="page active">
